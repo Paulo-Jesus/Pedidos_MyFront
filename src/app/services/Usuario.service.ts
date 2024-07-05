@@ -2,29 +2,36 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Enviroment } from 'src/enviroments/enviroment';
+import { UsuarioDTO } from '../interfaces/UsuarioDTO';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
 
-  url = Enviroment.endpoint;
+  ApiUrl = Enviroment.endpoint;
+
+  ObtenerTodos = "/api/Usuarios/ObtenerTodos";
 
   constructor(private http:HttpClient) { }
 
-  public obtenerTodos():Observable<any[]>{
-    const urlApi = `${this.url}${Enviroment.endpointAPIObtenerTodos}`
-    return this.http.get<any[]>(urlApi);
+  obtenerTodos():Observable<UsuarioDTO>{
+    return this.http.get<UsuarioDTO>(`${this.ApiUrl}${this.ObtenerTodos}`);
   }
 
+  // public obtenerTodos():Observable<any[]>{
+  //   const urlApi = `${this.ApiUrl}${Enviroment.endpointAPIObtenerTodos}`
+  //   return this.http.get<any[]>(urlApi);
+  // }
+
   public obtenerPorNombreUsuario(correo:string):Observable<any>{
-    const urlApi = `${this.url}${Enviroment.endpointAPIBuscarUsuarioBloqueado}${correo}`;
+    const urlApi = `${this.ApiUrl}${Enviroment.endpointAPIBuscarUsuarioBloqueado}${correo}`;
     const body = correo;
     return this.http.post(urlApi,body);
   }
 
   public desbloquearCuenta(correo:string):Observable<any>{
-    const urlApi = `${this.url}${Enviroment.endpointAPIDesbloquearCuenta}${correo}`;
+    const urlApi = `${this.ApiUrl}${Enviroment.endpointAPIDesbloquearCuenta}${correo}`;
     const body = correo;
     return this.http.put(urlApi,body);
   }

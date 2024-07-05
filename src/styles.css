@@ -57,5 +57,5 @@ body { margin: 0; }
     --borde_negro_33: 1px solid rgba(0, 0, 0, 0.333);
     --borde_gris_oscuro: 1px solid rgba(55, 65, 81, 1);
 }
-html, body { height: 100%; }
+html, body { height: 100%; width: 100%; overflow-x: hidden  ; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

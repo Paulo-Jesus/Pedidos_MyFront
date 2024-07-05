@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { AddUserComponent } from './add-edit-search-usuario/add-user/add-user.component';
+import { UsuarioService } from 'src/app/services/Usuario.service';
+import { DatumUsuarioDTO } from 'src/app/interfaces/UsuarioDTO';
 
 @Component({
   selector: 'app-usuario_layout',
@@ -16,11 +18,14 @@ export class Usuario_layoutComponent implements OnInit {
   datosTabla:any;
   dataSource = new MatTableDataSource();
   displayedColumns: string[] = ['action', 'identificacion', 'nombre', 'nombreUsuario', 'empresa' ,'estado'];
-  load:boolean=false;
+  load:boolean=true;
+  
+  listaUsuario: DatumUsuarioDTO[] = [];
 
   constructor(
     private fb: FormBuilder,
-    private dialog: Dialog
+    private dialog: Dialog,
+    private usuarioService : UsuarioService
   ) { 
     this.form = this.fb.group({
       identificacion: [''],
@@ -35,9 +40,22 @@ export class Usuario_layoutComponent implements OnInit {
 
   setSelection(event : Event){}
 
-  obtenerDatos(){
-    this.load = false;
-  }
+  obtenerDatos() {
+  this.usuarioService.obtenerTodos().subscribe(
+    (response) => {
+      // Aquí puedes manejar la respuesta del servicio
+      console.log('Usuarios obtenidos:', response);
+      this.load = false;
+      this.listaUsuario = response.data;
+      console.log(response.message, this.listaUsuario);
+    },
+    (error) => {
+      // Aquí puedes manejar el error en caso de que falle la petición
+      console.error('Error al obtener usuarios:', error);
+    }
+  );
+}
+
 
   rowSelect(element:any){
     /*
